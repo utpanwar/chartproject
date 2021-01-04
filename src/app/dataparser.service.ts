@@ -2,6 +2,7 @@ import { Graphdata } from './models/graph';
 
 import { Injectable } from '@angular/core';
 import { NgxCsvParser, NgxCSVParserError } from 'ngx-csv-parser';
+import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -32,16 +33,17 @@ export class DataparserService {
      const  type = this.file.name.endsWith('.csv') ? "csv" : "json";
      return  type ;
    }
-   private readCsv() : any
+   private async readCsv() : Promise<Observable<any[]| NgxCSVParserError>>
    {
-    this.ngxCsvParser.parse(this.file, { header: this.header, delimiter: ',' })
-    .pipe().subscribe((result: Array<any>) => {
+     return this.ngxCsvParser.parse(this.file, { header: this.header, delimiter: ',' });
+    // .pipe().subscribe((result: Array<any>) => {
 
-      console.log('Result', result);
-       return result;
-    }, (error: NgxCSVParserError) => {
-      console.log('Error', error);
-    });
+    //   console.log('Result', result);
+    //    return result;
+    // }, (error: NgxCSVParserError) => {
+    //   console.log('Error', error);
+    //   return error;
+    // });
    }
    
   //  readFileContent(): Promise<void> {
@@ -64,31 +66,34 @@ export class DataparserService {
   //   });
   // }
 
-   private readJson() : any
+   private async readJson() : Promise<any>
    {
     const fr: FileReader = new FileReader();
     fr.onload = () =>
     {
       let res = fr.result as string;
       console.log(JSON.parse(res));
-      return JSON.parse(res);
+      return <JSON>JSON.parse(res);
     }
       fr.readAsText(this.file);
+      // return "hiii";
    }
 
-   uploadDocument() : Graphdata
+   async uploadDocument() 
    {
      const type = this.checkType();
      console.log(type);
      if(type == "csv")
      {
-       const a = this.readCsv();
-      console.log(a);
-      return a;
+       const a = await this.readCsv();
+       console.log(a);
+       return a;
      } 
-     const b = this.readJson();
-      console.log(b);
-     return b;
+      const b =  this.readJson().then( x =>{
+        console.log(x);
+      })
+      // console.log(b);
+      return b;
    }
 
 

@@ -12,7 +12,7 @@ export class AppComponent implements OnInit {
   
   fr : any;
   fileToUpload: File = null;
-  datafromlocal : Graphdata;
+  datafromlocal : any;
   // file : any;
   constructor(private data : DataparserService) {}
 
