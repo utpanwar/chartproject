@@ -2,11 +2,11 @@
 <div class="form-group">
     <label for="file">Choose File</label>
     <input type="file" id="file" accept=".json,.csv"
-           (change)="handleFileInput($event)">
+           (change)="getfile($event)">
 </div>
 
 <button type="button" class="btn btn-primary" 
-     (click)="uploadDocument()">Upload File</button>
+     (click)="submitDoc()">Upload File</button>
 
      <!-- <br>
 <div *ngIf = "chart">
