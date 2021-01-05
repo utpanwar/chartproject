@@ -1,6 +1,7 @@
 import { DataparserService } from './dataparser.service';
 import { Graphdata } from './models/graph';
 import { Component, OnInit } from '@angular/core';
+import {pipe , map} from 'rxjs/operators';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -19,14 +20,37 @@ export class AppComponent implements OnInit {
 
   getfile(files)
    {
-     this.data.handleFileInput(files);
+    this.data.handleFileInput(files);
    }
-   
-   submitDoc() 
+
+   async submitDoc()  
    {
-     this.datafromlocal = this.data.uploadDocument();
-     console.log(this.datafromlocal);
-    //  console.log(this.data.uploadDocument());
+    //  this.datafromlocal = [];
+     let res : any= await this.data.uploadDocument();
+     if(Array.isArray(res)) // input : json
+     {
+     
+      this.datafromlocal = res;
+      console.log(this.datafromlocal);
+     }   
+     else
+     {
+      // this.datafromlocal = [];
+      // res.subscribe((x: Graphdata[]) =>{  // input : csv
+      //   this.datafromlocal = x;
+      //   console.log(this.datafromlocal);
+      //   });
+
+        this.datafromlocal = res.pipe(map((x : Graphdata)=> {
+         return  this.datafromlocal.id = x.id;
+          // console.log(x);
+          // console.log(this.datafromlocal);  
+        }  ));
+
+        this.datafromlocal.subscribe(x => console.log(x));
+        
+         
+     }  
    }
   
   ngOnInit() {
