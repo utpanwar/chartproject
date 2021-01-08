@@ -11,59 +11,61 @@ export class ChartdefaultComponent implements OnInit {
   constructor() { }
   
   ngOnInit() {
-  //   this.chart = new Chart('canvas' , {
-  //     type  : 'line',
-  //     data :{
-  //       labels :this.csvRecords,
-  //       datasets : [
-  //         {
-  //           data : this.datafromlocal,
-  //           borderColor: '0#3ba9f',
-  //           fill :false,
-  //         },
+    this.chart = new Chart('canvas' , {
+      type  : 'line',
+      data :{
+        labels :this.csvRecords,
+        datasets : [
+          {
+            data : this.datafromlocal,
+            borderColor: '0#3ba9f',
+            fill :false,
+          },
 
-  //         {
-  //           data : this.datafromlocal,
-  //           borderColor: '0#3ba9f',
-  //           fill :false,
-  //         }
-  //       ]
-  //     },
-  //     options: {
-  //       legend :{
-  //         display :false
-  //       // responsive: true,
-  //       // title: {
-  //       //   display: true,
-  //       //   text: 'Chart.js Line Chart'
-  //       // },
-  //       // tooltips: {
-  //       //   mode: 'index',
-  //       //   intersect: false,
-  //       // },
-  //       // hover: {
-  //       //   mode: 'nearest',
-  //       //   intersect: true
-  //       },
-  //       scales: {
-  //         xAxes: [{
-  //           display: true,
-  //           // scaleLabel: {
-  //           //   display: true,
-  //           //   labelString: 'Month'
-  //           // }
-  //         }],
-  //         yAxes: [{
-  //           display: true,
-  //           // scaleLabel: {
-  //           //   display: true,
-  //           //   // labelString: 'Value'
-  //           // }
-  //         }]
-  //       }
-  //     }
-  // })
+          {
+            data : this.datafromlocal,
+            borderColor: '0#3ba9f',
+            fill :false,
+          }
+        ]
+      },
+      options: {
+        legend :{
+          display :false
+        // responsive: true,
+        // title: {
+        //   display: true,
+        //   text: 'Chart.js Line Chart'
+        // },
+        // tooltips: {
+        //   mode: 'index',
+        //   intersect: false,
+        // },
+        // hover: {
+        //   mode: 'nearest',
+        //   intersect: true
+        },
+        scales: {
+          xAxes: [{
+            display: true,
+            // scaleLabel: {
+            //   display: true,
+            //   labelString: 'Month'
+            // }
+          }],
+          yAxes: [{
+            display: true,
+            // scaleLabel: {
+            //   display: true,
+            //   // labelString: 'Value'
+            // }
+          }]
+        }
+      }
+  })
           
-  // }
   }
+  }
+
+
 }

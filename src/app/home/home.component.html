@@ -1,0 +1,10 @@
+<p>This i sthe charts worlds</p>
+<div class="form-group">
+    <label for="file">Choose File</label>
+    <input type="file" id="file" accept=".json,.csv"
+           (change)="getfile($event)">
+</div>
+
+<button type="button" class="btn btn-primary" 
+     (click)="submitDoc()">Upload File</button>
+     
