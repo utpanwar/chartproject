@@ -1,60 +1,41 @@
 import { DataparserService } from './dataparser.service';
 import { Graphdata } from './models/graph';
-import { Component, OnInit } from '@angular/core';
-import {pipe , map} from 'rxjs/operators';
+import { Component, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnDestroy {
   chart : [];
-  
-  
-  fr : any;
-  fileToUpload: File = null;
   datafromlocal : any;
-  // file : any;
-  constructor(private data : DataparserService) {}
-
+  subscribe : Subscription;
+  constructor(private data : DataparserService,private router :Router) {}
 
   getfile(files)
    {
     this.data.handleFileInput(files);
    }
+   
 
-   async submitDoc()  
-   {
-    //  this.datafromlocal = [];
-     let res : any= await this.data.uploadDocument();
-     if(Array.isArray(res)) // input : json
-     {
-     
-      this.datafromlocal = res;
-      console.log(this.datafromlocal);
-     }   
-     else
-     {
-      // this.datafromlocal = [];
-      // res.subscribe((x: Graphdata[]) =>{  // input : csv
-      //   this.datafromlocal = x;
-      //   console.log(this.datafromlocal);
-      //   });
-
-        this.datafromlocal = res.pipe(map((x : Graphdata)=> {
-         return  this.datafromlocal.id = x.id;
-          // console.log(x);
-          // console.log(this.datafromlocal);  
-        }  ));
-
-        this.datafromlocal.subscribe(x => console.log(x));
-        
-         
-     }  
-   }
-  
-  ngOnInit() {
-    console.log( this.fileToUpload);
+   async submitDoc(){
+     this.datafromlocal = [];
+     let res : any = await this.data.uploadDocument();
+     if(res){
+      if(Array.isArray(res)){
+        this.datafromlocal = res;
+        console.log(this.datafromlocal);
+      }   
+      else this.subscribe = res.subscribe(x => console.log(x));
+      this.router.navigate(['/chartdefault']);
+    }  
   }
+
+ngOnDestroy()
+{
+  if(this.subscribe) this.subscribe.unsubscribe();
+}  
 
 }
