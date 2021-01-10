@@ -1,8 +1,10 @@
 import { Graphdata } from './models/graph';
 
 import { Injectable } from '@angular/core';
-import { NgxCsvParser} from 'ngx-csv-parser';
+import { NgxCsvParser, NgxCSVParserError} from 'ngx-csv-parser';
 import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+// import { resolve } from 'url';
 @Injectable({
   providedIn: 'root'
 })
@@ -28,18 +30,37 @@ export class DataparserService {
       }
   }
     
-  private async readCsv(){
-    return this.ngxCsvParser.parse(this.file, { header: this.header, delimiter: ',' })
-    .pipe(map( (x : Graphdata[]) => x.map((c : Graphdata)=>
-      ({ 
-        id : c.id,
-        name : c.name,
-        description : c.description,
-        price : c.price,
-        imageUrl: c.imageUrl,
-        quantity: c.quantity
-      }))));
-  }
+  // private async readCsv() {
+  //   let res: any[];
+  //    this.ngxCsvParser.parse(this.file, { header: this.header, delimiter: ',' })
+  //   .pipe().subscribe((result: Array<any>) => {
+ 
+  //     // console.log('Result', result);
+  //      res = result;
+  //   }, (error: NgxCSVParserError) => {
+  //     console.log('Error', error);
+  //   });
+  //   if(res)
+  //   {
+  //     console.log(" i got m");
+  //     return res;
+  //   } 
+  // }
+
+
+  private  readCsv() {
+    return new Promise((res,rej) => {
+     this.ngxCsvParser.parse(this.file, { header: this.header, delimiter: ',' })
+    .pipe().subscribe((result: Array<any>) => {
+       let a = result;
+       res(a);
+    }, (error: NgxCSVParserError) => {
+      // console.log('Error', error);
+      rej(error);
+    });
+    });
+  } 
+
   
   private  readJson() {
     return new Promise((resolve,reject) =>{
@@ -63,10 +84,26 @@ export class DataparserService {
   //   }
 
   async uploadDocument() {
-    const a = this.checkType();
-    if(!a) return;
-    return  a == "csv" ?  await this.readCsv() : await this.readJson();
-   }
+    const type = this.checkType();
+    if(!type) return;
+     let m = type == "csv" ?  await this.readCsv() : await this.readJson();
+     return m;
+    }
+
+
+//    async submitDoc(){
+//     this.datafromlocal = [];
+//     let res : any = await this.data.uploadDocument();
+//     if(res){
+//      if(Array.isArray(res)){
+//        this.datafromlocal = res;
+//        console.log(this.datafromlocal);
+//      }   
+//      else this.subscribe = res.subscribe(x => console.log(x));
+//      this.router.navigate(['/chartdefault']);
+//    }  
+//  }
+
 
   //  uploadDocument1() 
   //  {

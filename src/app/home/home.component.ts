@@ -24,21 +24,16 @@ export class HomeComponent implements OnDestroy {
      
   
      async submitDoc(){
-       this.datafromlocal = [];
-       let res : any = await this.data.uploadDocument();
+       let res  = await this.data.uploadDocument();
        if(res){
-        if(Array.isArray(res)){
-          this.datafromlocal = res;
-          console.log(this.datafromlocal);
-        }   
-        else this.subscribe = res.subscribe(x => console.log(x));
+        console.log(res);
         this.router.navigate(['/chartdefault']);
       }  
     }
   
   ngOnDestroy()
   {
-    if(this.subscribe) this.subscribe.unsubscribe();
+    // if(this.subscribe) this.subscribe.unsubscribe();
   }  
   
   }
