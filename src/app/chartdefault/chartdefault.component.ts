@@ -12,27 +12,33 @@ export class ChartdefaultComponent implements OnInit {
   constructor(private data : DataparserService) { }
   
   async ngOnInit() {
-  this.chart = new Chart(this.title.nativeElement.getContext('2d') , {
+    let a = this.data.uploadDocument();
+    console.log("a",a);
+    // document.getElementById("canvas").style.width = '300px';
+    // document.getElementById("canvas").style.height = '150px';
+  //  this.chart.canvas.parentNode.style.width = '128px';
+  this.chart = new Chart('canvas' , {
       type  : 'line',
       data :{
         labels : ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
         datasets : [
           {
             data : [12, 19, 3, 5, 2, 3],
-            borderColor: '0#3ba9f',
+            borderColor: '#3cba9f',
             fill :true,
           },
 
           {
-            data : [12, 19, 3, 5, 2, 3],
-            borderColor: '0#3ba9f',
+            data : [10, 16, 30, 15, 7, 15],
+            borderColor: '#ffcc00',
             fill :false,
           }
         ]
       },
       options: {
         legend :{
-          display :false
+          display :true,
+          name : "mdm",
         },
         scales: {
           xAxes: [{
