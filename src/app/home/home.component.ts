@@ -1,4 +1,4 @@
-import { Component, } from '@angular/core';
+import { Component, OnInit, } from '@angular/core';
 import { DataparserService } from '../dataparser.service';
 // import { Graphdata } from './models/graph';
 import {  OnDestroy } from '@angular/core';
@@ -10,12 +10,13 @@ import { Router } from '@angular/router';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnDestroy {
-
+export class HomeComponent implements OnInit {
+    res : any
     chart : [];
     datafromlocal : any;
     subscribe : Subscription;
-    constructor(private data : DataparserService,private router :Router) {}
+    r : any;
+    constructor(private data : DataparserService,private router :Router) { console.log("const of home");}
   
     getfile(files)
      {
@@ -24,16 +25,18 @@ export class HomeComponent implements OnDestroy {
      
   
      async submitDoc(){
-       let res  = await this.data.uploadDocument();
-       if(res){
-        console.log(res);
+        this.res  = (await this.data.uploadDocument()).subscribe(x => this.r = x);
+       if(this.res){
+        console.log(this.res);
+        console.log(this.r);
         this.router.navigate(['/chartdefault']);
       }  
     }
   
-  ngOnDestroy()
+  ngOnInit()
   {
     // if(this.subscribe) this.subscribe.unsubscribe();
+    console.log("ngoninit of home");
   }  
   
   }

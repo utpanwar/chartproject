@@ -1,5 +1,5 @@
 import { DataparserService } from './../dataparser.service';
-import {  Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {  Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Chart} from 'chart.js';
 @Component({
   selector: 'app-chartdefault',
@@ -7,29 +7,48 @@ import { Chart} from 'chart.js';
   styleUrls: ['./chartdefault.component.css']
 })
 export class ChartdefaultComponent implements OnInit {
+   send : any[];
   @ViewChild('title', {static : true}) title: ElementRef;
   chart : [] = [];
-  constructor(private data : DataparserService) { }
+  constructor(private data : DataparserService) 
+  {
+    console.log("const of chart");
+ }
   
   async ngOnInit() {
-    let a = this.data.uploadDocument();
-    console.log("a",a);
+    // let a = this.data.uploadDocument();
+    // console.log("a",this.send);
     // document.getElementById("canvas").style.width = '300px';
     // document.getElementById("canvas").style.height = '150px';
   //  this.chart.canvas.parentNode.style.width = '128px';
+  (await this.data.uploadDocument()).subscribe((x :any[])=> this.send = x);
+  console.log(this.send);
+  let label : any[] = [] ;
+  let color1 :any[] =[];
+  let color2 : any[] = [];
+  this.send.forEach( a => {
+    label.push(a.color);
+    color1.push(a.number);
+    color2.push(a.nums);
+  })
+  if(label.pop() == null) alert("please upload suitable data");
+  console.log(label);
+  console.log(color1);
+  console.log(color2);
+
   this.chart = new Chart('canvas' , {
       type  : 'line',
       data :{
-        labels : ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        labels : label,
         datasets : [
           {
-            data : [12, 19, 3, 5, 2, 3],
+            data : color1,
             borderColor: '#3cba9f',
             fill :true,
           },
 
           {
-            data : [10, 16, 30, 15, 7, 15],
+            data :color2,
             borderColor: '#ffcc00',
             fill :false,
           }

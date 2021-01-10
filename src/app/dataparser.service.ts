@@ -82,14 +82,38 @@ export class DataparserService {
   //      return this.readJson();
   //     }
   //   }
-
+  
   async uploadDocument() {
     const type = this.checkType();
     if(!type) return;
      let m = type == "csv" ?  await this.readCsv() : await this.readJson();
-     return m;
-    }
+     return new Observable( d => {
+        d.next(m);
+     });
 
+  }
+
+  // uploadDocument1() {
+  //   const observable = new Observable(async function subscribe(subscriber) {
+  //     // const type = this.checkType();
+  //     // if(!type){
+  //     //   // subscriber.error(err);
+  //     // }
+  //     subscriber.next(await this.readCsv());
+     
+  //   });
+  // }
+
+  // uploadDocument12() {
+  //   const observable = new Observable(subscribe => {
+  //     // const type = this.checkType();
+  //     // if(!type){
+  //     //   // subscriber.error(err);
+  //     // }
+  //     subscribe.next(this);
+     
+  //   });
+  // }
 
 //    async submitDoc(){
 //     this.datafromlocal = [];
